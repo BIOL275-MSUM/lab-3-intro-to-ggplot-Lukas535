@@ -1,6 +1,6 @@
 ---
 title: "Lab 3 Report"
-author: "___"
+author: "Lukas Robinson"
 date: "`r format(Sys.Date())`"
 output: github_document
 ---
@@ -11,19 +11,41 @@ Instructions for this lab report can be found on [Your assignment section of Lab
 
 > A. Insert an R code chunk and create a graph depicting the frequency distribution of the 35 mass measurements. It should have legible text and appropriate axis labels.
 
-\_\_\_
+```{r}
+# load packages -----------------------------------------------------------
+
+library(tidyverse)
+
+# fireflies data ----------------------------------------------------------
+
+fireflies_data<-read_csv("https://whitlockschluter.zoology.ubc.ca/wp-content/data/chapter02/chap02q19FireflySpermatophoreMass.csv")
+
+ggplot(data=fireflies_data)+
+  geom_histogram(mapping=aes(x=spermatophoreMass),binwidth=.01,
+                 boundary=0,closed="left",
+                 fill="#C5351B",color="black")+
+  labs(x="spermatophoreMass",y="Frequency (number of eggs)")+
+  scale_y_continuous(breaks=seq(0,11,5), limits=c(0,11),
+                     expand=expansion(mult=0))+
+  theme_classic()+
+  theme(
+    axis.title=element_text(face="bold"),
+    axis.text=element_text(color="black",size=rel(1))
+  )
+```
+
 
 > B. What type of graph did you choose in part (A)? Why?
 
-\_\_\_
+Histogram because it is numerical numerical data.
 
 > C. Describe the shape of the frequency distribution. What are its main features?
 
-\_\_\_
+the shape is a bell curve if you ignore the one outlier. 
 
 > D. What term would be used to describe the largest measurement in the frequency distribution? You can refer to the lecture slides, your notes, or the textbook.
 
-\_\_\_
+Mode
 
 ## Bird orders
 
@@ -38,19 +60,36 @@ birds <- ebird_taxonomy %>%           # start with the ebird_taxonomy data
 
 > E. How many bird species are in the new birds dataset? How did you find out?
 
-\_\_\_
+10,721 I found this by looking at a table of distinct scientific names with 10,721 rows meaning that there is 10,721 bird species.
 
 > H. How many orders are there? You can get this right by counting on the graph, but you will only get full points if you use some code to figure it out.
 
-\_\_\_
+There are 41 orders. I found this by looking at a contigency table and seeing that there is 41 rows meaning that there is 41 distinct orders.
 
 > F. Insert an R code chunk and create a graph depicting the distribution of orders in the birds dataset. Sort the orders with the most frequent on the left. It should have legible text and appropriate axis labels.
 
-\_\_\_
+```{r}
+ggplot(data = birds) +
+  geom_bar(mapping = aes(x = fct_infreq(order)), fill = "#C5351B", 
+           width = .8) +
+  labs(x = "Order", y = "Number of species", 
+       title = "Number of bird species in each order", 
+       subtitle = "*Numbers are in log scale to better show all data.") +
+  scale_y_log10() +
+  theme_classic(base_size = 12) +
+  theme(
+    axis.title = element_text(face = "bold"),
+    axis.text = element_text(color = "black", size = rel(.5)),
+    axis.text.x = element_text(angle = 50, hjust = 1),
+    axis.ticks.x = element_blank()
+  )
+           
+```
+
 
 > G. What kind of graph did you create? Why?
 
-\_\_\_
+Bar Graph because it is categorical and numerical data.
 
 ## Links to peer review
 
